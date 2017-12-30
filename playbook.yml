@@ -3,5 +3,20 @@
   become: yes
   tasks:
   - name: install
-    yum: name=gcc state=latest
-
+    yum: 
+      name: "{{ item }}"
+      state: installed
+    with_items:
+    - gcc
+    - make
+    - strace
+    - sysstat
+    - lsof
+    - tcpdump
+    - wireshark
+    - telnet
+    - nc
+    - traceroute
+    - git
+    - tmux
+    - bash-completion
