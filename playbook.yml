@@ -17,6 +17,27 @@
     - telnet
     - nc
     - traceroute
+    - postfix
     - git
     - tmux
     - bash-completion
+    - libselinux-python
+
+  - name: skel Maildir
+    file:
+      path: "/etc/skel/Maildir/{{ item }}"
+      state: directory
+      mode: 0700
+    with_items:
+    - new
+    - cur
+    - tmp
+
+  - name: put main.cf
+    copy:
+      src: files/main.cf
+      dest: /etc/postfix/main.cf
+      owner: root
+      group: root
+      mode: 0644
+      backup: yes
