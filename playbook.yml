@@ -39,11 +39,32 @@
     - cur
     - tmp
 
-  - name: put main.cf
+  - name: postfix main.cf
     copy:
-      src: files/main.cf
+      src: files/postfix/main.cf
       dest: /etc/postfix/main.cf
       owner: root
       group: root
       mode: 0644
       backup: yes
+
+  - name: dovecot user
+    copy:
+      src: files/dovecot/users
+      dest: /etc/dovecot/users
+      owner: root
+      group: root
+      mode: 0644
+      backup: yes
+
+  - name: dovecot conf.d
+    copy:
+      src: "files/dovecot/conf.d/{{ item }}"
+      dest: /etc/dovecot/conf.d
+      owner: root
+      group: root
+      mode: 0644
+      backup: yes
+    with_items:
+    - 10-auth.conf
+    - 10-mail.conf
