@@ -2,6 +2,7 @@
 - hosts: all
   become: yes
   tasks:
+  - selinux: state=disabled
   - name: install
     yum: 
       name: "{{ item }}"
