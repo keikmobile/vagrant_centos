@@ -7,6 +7,7 @@
       name: "{{ item }}"
       state: installed
     with_items:
+    - epel-release
     - gcc
     - make
     - strace
@@ -22,6 +23,10 @@
     - tmux
     - bash-completion
     - libselinux-python
+    - pypolicyd-spf
+    - opendkim
+    - opendmarc
+    - dovecot
 
   - name: skel Maildir
     file:
