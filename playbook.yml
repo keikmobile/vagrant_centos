@@ -2,7 +2,6 @@
 - hosts: all
   become: yes
   tasks:
-  - selinux: state=disabled
   - name: install
     yum: 
       name: "{{ item }}"
@@ -19,15 +18,17 @@
     - telnet
     - nc
     - traceroute
-    - postfix
     - git
     - tmux
     - bash-completion
     - libselinux-python
+    - postfix
     - pypolicyd-spf
     - opendkim
     - opendmarc
     - dovecot
+
+  - selinux: state=disabled
 
   - name: skel Maildir
     file:
@@ -68,3 +69,10 @@
     with_items:
     - 10-auth.conf
     - 10-mail.conf
+
+  - service:
+      name: "{{ item }}"
+      state: restarted
+    with_items:
+    - postfix
+    - dovecot
