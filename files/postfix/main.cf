@@ -293,7 +293,7 @@ mynetworks_style = host
 # list this system as their primary or backup MX host. See the
 # permit_mx_backup restriction description in postconf(5).
 #
-relay_domains = $mydestination
+relay_domains = 
 
 # INTERNET OR INTRANET
 
@@ -527,7 +527,6 @@ home_mailbox = Maildir/
 #luser_relay = $user@other.host
 #luser_relay = $local@other.host
 #luser_relay = admin+$local
-luser_relay = unknown_user@localhost
   
 # JUNK MAIL CONTROLS
 # 
