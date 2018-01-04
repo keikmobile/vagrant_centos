@@ -110,10 +110,10 @@ mydomain = localhost
 #
 # Note: you need to stop/start Postfix when this parameter changes.
 #
-#inet_interfaces = all
+inet_interfaces = all
 #inet_interfaces = $myhostname
 #inet_interfaces = $myhostname, localhost
-inet_interfaces = localhost
+#inet_interfaces = localhost
 
 # Enable IPv4, and IPv6 if supported
 inet_protocols = all
@@ -601,7 +601,7 @@ debug_peer_level = 2
 # increase the verbose logging level by the amount specified in the
 # debug_peer_level parameter.
 #
-#debug_peer_list = 127.0.0.1
+debug_peer_list = 127.0.0.1 192.168.33.10
 #debug_peer_list = some.domain
 
 # The debugger_command specifies the external command that is executed
@@ -675,3 +675,11 @@ sample_directory = /usr/share/doc/postfix-2.6.6/samples
 # readme_directory: The location of the Postfix README files.
 #
 readme_directory = /usr/share/doc/postfix-2.6.6/README_FILES
+
+# for SPF
+smtpd_recipient_restrictions = 
+ permit_sasl_authenticated
+ reject_unauth_destination
+ check_policy_service unix:private/policyd-spf
+
+policy-spf_time_limit = 3600s
