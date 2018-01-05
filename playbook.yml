@@ -40,10 +40,37 @@
     - cur
     - tmp
 
+  - name: ssh ssh_config
+    copy:
+      src: files/ssh/ssh_config
+      dest: /etc/ssh/ssh_config
+      owner: root
+      group: root
+      mode: 0644
+      backup: yes
+
   - name: postfix main.cf
     copy:
       src: files/postfix/main.cf
       dest: /etc/postfix/main.cf
+      owner: root
+      group: root
+      mode: 0644
+      backup: yes
+
+  - name: opendkim
+    copy:
+      src: files/opendkim/opendkim.conf
+      dest: /etc/opendkim.conf
+      owner: root
+      group: root
+      mode: 0644
+      backup: yes
+
+  - name: opendmarc
+    copy:
+      src: files/opendmarc/opendmarc.conf
+      dest: /etc/opendmarc.conf
       owner: root
       group: root
       mode: 0644
@@ -74,5 +101,8 @@
       name: "{{ item }}"
       state: restarted
     with_items:
+    - sshd
     - postfix
     - dovecot
+    - opendkim
+    - opendmarc

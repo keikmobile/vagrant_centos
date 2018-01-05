@@ -116,7 +116,7 @@ inet_interfaces = all
 #inet_interfaces = localhost
 
 # Enable IPv4, and IPv6 if supported
-inet_protocols = all
+inet_protocols = ipv4
 
 # The proxy_interfaces parameter specifies the network interface
 # addresses that this mail system receives mail on by way of a
@@ -683,3 +683,8 @@ smtpd_recipient_restrictions =
  check_policy_service unix:private/policyd-spf
 
 policy-spf_time_limit = 3600s
+
+# for DKIM
+smtpd_milters = inet:127.0.0.1:8891
+non_smtpd_milters = $smtpd_milters
+milter_default_action = accept
