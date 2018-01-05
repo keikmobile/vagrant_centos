@@ -21,6 +21,7 @@
     - git
     - tmux
     - bash-completion
+    - bind
     - libselinux-python
     - postfix
     - pypolicyd-spf
@@ -44,6 +45,15 @@
     copy:
       src: files/ssh/ssh_config
       dest: /etc/ssh/ssh_config
+      owner: root
+      group: root
+      mode: 0644
+      backup: yes
+
+  - name: resolv.conf
+    copy:
+      src: files/resolv.conf
+      dest: /etc/resolv.conf
       owner: root
       group: root
       mode: 0644
@@ -102,6 +112,7 @@
       state: restarted
     with_items:
     - sshd
+    - named
     - postfix
     - dovecot
     - opendkim
