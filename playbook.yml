@@ -68,6 +68,11 @@
       mode: 0644
       backup: yes
 
+  - name: smtp-sink
+    shell: smtp-sink -R /home/vagrant -u vagrant -d sink/%Y%m%d%H/%M. 127.0.0.1:10025 5 &
+    args:
+      creates: /home/vagrant/sink.file
+
   - name: opendkim
     copy:
       src: files/opendkim/opendkim.conf
@@ -105,6 +110,7 @@
       backup: yes
     with_items:
     - 10-auth.conf
+    - 10-ssl.conf
     - 10-mail.conf
 
   - service:
