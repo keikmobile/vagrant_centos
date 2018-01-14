@@ -59,14 +59,35 @@
       mode: 0644
       backup: yes
 
-  - name: postfix main.cf
+  - name: named conf
     copy:
-      src: files/postfix/main.cf
-      dest: /etc/postfix/main.cf
+      src: files/named/named.conf
+      dest: /etc/named.conf
       owner: root
       group: root
       mode: 0644
       backup: yes
+
+  - name: named zone
+    copy:
+      src: files/named/example.com.zone
+      dest: /var/named/example.com.zone
+      owner: root
+      group: root
+      mode: 0644
+      backup: yes
+
+  - name: postfix main.cf
+    copy:
+      src: "files/postfix/{{ item }}"
+      dest: /etc/postfix/
+      owner: root
+      group: root
+      mode: 0644
+      backup: yes
+    with_items:
+    - main.cf
+    - master.cf
 
   - name: smtp-sink
     shell: smtp-sink -R /home/vagrant -u vagrant -d sink/%Y%m%d%H/%M. 127.0.0.1:10025 5 &
@@ -81,6 +102,11 @@
       group: root
       mode: 0644
       backup: yes
+
+  - name: smtp-sink
+    shell: opendkim-genkey -D /etc/opendkim/keys/
+    args:
+      creates: /etc/opendkim/keys/default.private
 
   - name: opendmarc
     copy:
