@@ -1,9 +1,22 @@
 ---
 - hosts: all
   become: yes
+  vars:
+    user_home: "/home/vagrant"
+    user_local: "/home/vagrant/local"
+    perl_version: "5.26.1"
+    python_version: "3.6.4"
+    ruby_version: "2.4.2"
+    xbuild_inst:
+      perl:
+        version: "5.26.1"
+      python:
+        version: "3.6.4"
+      ruby:
+        version: "2.4.2"
   tasks:
   - name: install
-    yum: 
+    yum:
       name: "{{ item }}"
       state: installed
     with_items:
@@ -19,6 +32,7 @@
     - nc
     - traceroute
     - git
+    - patch
     - tmux
     - bash-completion
     - bind
@@ -28,6 +42,30 @@
     - opendkim
     - opendmarc
     - dovecot
+    - openssl-devel
+    - readline-devel
+    - zlib-devel
+
+  - name: mkdir
+    file:
+      path: "{{ user_local }}"
+      state: directory
+
+  - git:
+      repo: "https://github.com/tagomoris/xbuild.git"
+      dest: "{{ user_local }}/xbuild"
+      update: no
+
+  - name: xbuld install perl/python/ruby
+    shell: "{{ user_local }}/xbuild/{{ item.key }}-install {{ item.value.version }} {{ user_local }}/{{ item.key }}-{{ item.value.version }}"
+    args:
+      creates: "{{ user_local }}/{{ item.key }}"
+    with_dict: "{{ xbuild_inst }}"
+
+  - shell: "ln -s {{ user_local }}/{{ item.key }}-{{ item.value.version }} {{ user_local }}/{{ item.key }}"
+    args:
+      creates: "{{ user_local }}/{{ item.key }}"
+    with_dict: "{{ xbuild_inst }}"
 
   - selinux: state=disabled
 

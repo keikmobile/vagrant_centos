@@ -676,6 +676,8 @@ sample_directory = /usr/share/doc/postfix-2.6.6/samples
 #
 readme_directory = /usr/share/doc/postfix-2.6.6/README_FILES
 
+smtpd_authorized_xclient_hosts = 127.0.0.1
+
 # for SPF
 smtpd_recipient_restrictions = 
  permit_sasl_authenticated
