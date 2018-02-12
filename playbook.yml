@@ -141,7 +141,7 @@
       mode: 0644
       backup: yes
 
-  - name: smtp-sink
+  - name: genkey for dkim
     shell: opendkim-genkey -D /etc/opendkim/keys/
     args:
       creates: /etc/opendkim/keys/default.private

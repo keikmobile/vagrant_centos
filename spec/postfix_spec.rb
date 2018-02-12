@@ -4,7 +4,27 @@ describe package('postfix'), :if => os[:family] == 'redhat' do
   it { should be_installed }
 end
 
+describe package('pypolicyd-spf') do
+  it { should be_installed }
+end
+
+describe service('opendkim') do
+  it { should be_enabled }
+end
+
+describe service('opendmarc') do
+  it { should be_enabled }
+end
+
 describe port(25) do
+  it { should be_listening }
+end
+
+describe port(8891) do
+  it { should be_listening }
+end
+
+describe port(8893) do
   it { should be_listening }
 end
 
@@ -28,4 +48,8 @@ end
 
 describe file('/etc/skel/Maildir/tmp') do
   it { should be_directory }
+end
+
+describe port(10025) do
+  it { should be_listening }
 end
