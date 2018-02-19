@@ -680,6 +680,7 @@ smtpd_authorized_xclient_hosts = 127.0.0.1
 
 # for SPF
 smtpd_recipient_restrictions = 
+ permit_mynetworks
  permit_sasl_authenticated
  reject_unauth_destination
  check_policy_service unix:private/policyd-spf
