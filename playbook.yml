@@ -51,6 +51,12 @@
       path: "{{ user_local }}"
       state: directory
 
+  - name: home
+    copy:
+      src: files/home/bash_profile
+      dest: "{{ user_home }}/.bash_profile"
+      backup: yes
+
   - git:
       repo: "https://github.com/tagomoris/xbuild.git"
       dest: "{{ user_local }}/xbuild"
@@ -79,10 +85,10 @@
     - cur
     - tmp
 
-  - name: ssh ssh_config
+  - name: ssh sshd_config
     copy:
-      src: files/ssh/ssh_config
-      dest: /etc/ssh/ssh_config
+      src: files/ssh/sshd_config
+      dest: /etc/ssh/sshd_config
       owner: root
       group: root
       mode: 0644
