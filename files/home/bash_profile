@@ -7,7 +7,7 @@ fi
 
 # User specific environment and startup programs
 
-PATH=$PATH:$HOME/bin:$HOME/local/ruby/bin:$HOME/local/perl/bin:$HOME/local/python/bin
+PATH=$HOME/bin:$HOME/local/ruby/bin:$HOME/local/perl/bin:$HOME/local/python/bin:$PATH:
 
 export PATH
 
