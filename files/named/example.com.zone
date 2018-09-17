@@ -8,5 +8,5 @@ $TTL 86400
 )
         IN NS example.com.
 @       IN MX 10 mail.example.com.
-@       IN TXT "v=spf1 mx ~all" ; SPF record
+@       IN TXT "v=spf1 ip4:192.168.33.10 -all" ; SPF record
 @       IN A  192.168.33.10
