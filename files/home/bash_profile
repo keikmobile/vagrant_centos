@@ -13,3 +13,4 @@ export PATH
 
 LANG=c
 export LANG
+export LC_ALL=en_US.UTF-8
