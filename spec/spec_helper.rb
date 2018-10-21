@@ -17,20 +17,15 @@ end
 
 host = ENV['TARGET_HOST']
 
-`vagrant up #{host}`
+#`vagrant up #{host}`
+#config = Tempfile.new('', Dir.tmpdir)
+#config.write(`vagrant ssh-config #{host}`)
+#config.close
 
-config = Tempfile.new('', Dir.tmpdir)
-config.write(`vagrant ssh-config #{host}`)
-config.close
+#options = Net::SSH::Config.for(host, [config.path])
 
-options = Net::SSH::Config.for(host, [config.path])
-
-options[:user] = 'vagrant'
-options[:port] = 2222
-options[:keys] = '.vagrant/machines/default/virtualbox/private_key'
-
-set :host,        options[:host_name] || host
-set :ssh_options, options
+#set :host,        options[:host_name] || host
+#set :ssh_options, options
 
 # Disable sudo
 # set :disable_sudo, true

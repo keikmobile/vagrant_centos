@@ -13,35 +13,35 @@ Vagrant.configure("2") do |config|
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://vagrantcloud.com/search.
   config.vm.box = "centos/6"
-  config.vm.hostname = "centos601"
 
-  # Disable automatic box update checking. If you disable this, then
-  # boxes will only be checked for updates when the user runs
-  # `vagrant box outdated`. This is not recommended.
-  # config.vm.box_check_update = false
+  config.vm.define "centos601" do |mta01|
+    mta01.vm.hostname = "centos601"
+    mta01.vm.network "forwarded_port", guest: 25,  host: 10025, host_ip: "127.0.0.1"
+    mta01.vm.network "forwarded_port", guest: 110, host: 10110, host_ip: "127.0.0.1"
+    mta01.vm.network "forwarded_port", guest: 143, host: 10143, host_ip: "127.0.0.1"
+    mta01.vm.network "private_network", ip: "192.168.33.101"
+    mta01.vm.provision "ansible_local" do |ansible|
+      ansible.playbook = "ansible/playbook.yml"
+      ansible.verbose  = true
+    end
+    mta01.vm.provision :serverspec do |spec|
+      spec.pattern = 'spec/*_spec.rb'
+      spec.error_no_spec_files = false
+    end
+  end
 
-  # Create a forwarded port mapping which allows access to a specific port
-  # within the machine from a port on the host machine. In the example below,
-  # accessing "localhost:8080" will access port 80 on the guest machine.
-  # NOTE: This will enable public access to the opened port
-  # config.vm.network "forwarded_port", guest: 80, host: 8080
-
-  # Create a forwarded port mapping which allows access to a specific port
-  # within the machine from a port on the host machine and only allow access
-  # via 127.0.0.1 to disable public access
-  # config.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
-  config.vm.network "forwarded_port", guest: 25,  host: 10025, host_ip: "127.0.0.1"
-  config.vm.network "forwarded_port", guest: 110, host: 10110, host_ip: "127.0.0.1"
-  config.vm.network "forwarded_port", guest: 143, host: 10143, host_ip: "127.0.0.1"
-
-  # Create a private network, which allows host-only access to the machine
-  # using a specific IP.
-  config.vm.network "private_network", ip: "192.168.33.10"
-
-  # Create a public network, which generally matched to bridged network.
-  # Bridged networks make the machine appear as another physical device on
-  # your network.
-  # config.vm.network "public_network"
+  config.vm.define "centos602" do |msa01|
+    msa01.vm.hostname = "centos602"
+    msa01.vm.network "private_network", ip: "192.168.33.102"
+    msa01.vm.provision "ansible_local" do |ansible|
+      ansible.playbook = "ansible/playbook.yml"
+      ansible.verbose  = true
+    end
+    msa01.vm.provision :serverspec do |spec|
+      spec.pattern = 'spec/*_spec.rb'
+      spec.error_no_spec_files = false
+    end
+  end
 
   # Share an additional folder to the guest VM. The first argument is
   # the path on the host to the actual folder. The second argument is
@@ -64,19 +64,5 @@ Vagrant.configure("2") do |config|
   # View the documentation for the provider you are using for more
   # information on available options.
 
-#  config.vm.provision "ansible" do |ansible|
-  config.vm.provision "ansible_local" do |ansible|
-    ansible.playbook = "playbook.yml"
-    ansible.verbose  = true
-    ansible.limit    = "all"
-  end
 
-  config.vm.provision :serverspec do |spec|
-    # pattern for specfiles to search
-    spec.pattern = 'spec/*_spec.rb'
-    # disable error if no specfile was found ( usefull with dynamic specfile retrieving through another provisionner like Ansible Galaxy => specfiles can be saved into ansible role repository for example ). Default: true
-    spec.error_no_spec_files = false
-    # save result into html an report, saved into a 'rspec_html_reports' directory. Default: false
-#    spec.html_output = true
-  end
 end
